@@ -13,9 +13,12 @@ class Comment extends Model
 
     public static function getComments($inPage = 5)
     {
-		return Comment::select('comments.*', 'users.name', 'users.image')
-            ->join('users', 'comments.user_id', '=', 'users.id')
-            ->orderBy('comments.id', 'desc')
+		return Comment::orderBy('comments.id', 'desc')
             ->paginate($inPage);
+    }
+
+    public function user()
+    {
+        return $this -> belongsTo('App\User');
     }
 }

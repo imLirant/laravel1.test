@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+use Illuminate\Http\Request;
 use App\User;
 
 use Illuminate\Support\Facades\DB;
@@ -18,19 +18,23 @@ class ProfileController extends Controller
 
     public function index() 
     {
-    	return view("profile_edit", ["user" => User::getUserInfo(), "coutnrys" => DB::table('country')->get()]);
+    	return view("profile-edit", ["user" => User::getUserInfo(), "countries" => DB::table('country')->get()]);
     }
 
     public function show($id = 0)
     {
-        return view("showProfile", ["user"=>User::getUserInfo($id)]);
+        return view("show-profile", ["user"=>User::getUserInfo($id)]);
     }
 
-    public function update() 
+    public function update(Request $request) 
     {
-    	$input = Request::all();
+    	$input = $request -> all();
         
+        $user = User::getUserInfo();
+
         $messages = [];
+
+        $update = [];
 
         request()->validate([
             'email' => 'nullable|email|unique:users|max:255',
@@ -40,44 +44,37 @@ class ProfileController extends Controller
         ]);
 
         if (isset($input['first_name'])) {
-            User::where('id', Auth::id())
-                ->update(['first_name' => $input['first_name']]);
-
+            $update['first_name'] = $input['first_name'];
             $messages[] = "Firs name changed";
         }
 
         if (isset($input['last_name'])) {
-            User::where('id', Auth::id())
-                ->update(['last_name' => $input['last_name']]);
+            $update['last_name'] = $input['last_name'];
 
             $messages[] = "Last name changed";
         }
 
         if (isset($input['email'])) {
-            User::where('id', Auth::id())
-                ->update(['email' => $input['email'], 'email_verified_at' => null]);
-        
+            $update['email'] = $input['email'];
+            $update['email_verified_at'] = null;
+            $user -> email_verified_at = null; 
             $messages[] = "Email changed";
         }
 
-        if (isset(request()->image)) {
+        if (request()->hasFile('image')) {
             $imageName = Auth::id().'-'.time().'.'.request()->image->getClientOriginalExtension();
-
             request()->image->move(public_path('images'), $imageName);
-
-            User::where('id', Auth::id())
-                ->update(['image' => $imageName]);
-
+            $update['image'] = $imageName;
             $messages[] = "Image changed";
         }
 
         if (isset($input['city_id']) and $input['city_id'] != 0) {
-            User::where('id', Auth::id())
-                ->update(['country_id' => $input['country_id'], 'region_id' => $input['region_id'], 'city_id' => $input['city_id']]);
+            $update['country_id'] = $input['country_id'];
+            $update['region_id'] = $input['region_id'];
+            $update['city_id'] = $input['city_id'];
+            
             $messages[] = "Residence changed";
         }
-
-        $user = User::getUserInfo();
 
         if (isset($input['old_pass'])) {
             if (Hash::check($input['old_pass'], $user -> password)) {
@@ -85,21 +82,24 @@ class ProfileController extends Controller
                 'password' => ['required', 'string', 'min:8', 'confirmed']
                 ]);
 
-                User::where('id', Auth::id())
-                    ->update(['password' => Hash::make($input['password'])]);
-
-                $messages[] = "Password chenged";
+                $update['password'] = Hash::make($input['password']);
+                $messages[] = "Password changed";
             }
             else {
                 $messages[] = "Wrong password";
             }
         }    
 
+        if (!empty($update)) {
+            User::where('id', Auth::id())
+                ->update($update);
+        }
+
         if ($user -> email_verified_at !== null) {
-            return view("profile_edit", ["user"=>$user, "messages"=>$messages, "coutnrys" => DB::table('country')->get()]);
+            return redirect() -> back() -> with('UserUpdateResut', $messages);
         }
         else {
-            return redirect()->route('verification.resend');
+            return redirect() -> route('verification.resend');
         }
     }
 }

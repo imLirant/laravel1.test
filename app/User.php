@@ -73,4 +73,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $user; 
     }
+
+    public function getImagePath()
+    {
+        return "/images/".$this -> image;
+    }
+
+    public function getProfileUrl()
+    {
+        return "/profile/id=".$this -> id;
+    }
 }

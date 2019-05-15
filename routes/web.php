@@ -19,8 +19,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/comments', 'CommentController@index');
-Route::post('/comments', 'CommentController@create');
+Route::get('/comments', 'CommentController@index')->name('comments');
+Route::post('/comments', 'CommentController@store');
 
 Route::get('/profile/edit', 'ProfileController@index');
 Route::post('/profile/edit', 'ProfileController@update')->name('image.upload.post');
@@ -29,7 +29,6 @@ Route::get('/profile/id={id}', 'ProfileController@show');
 Route::get('/profile', 'ProfileController@show');
 
 Route::get('/get_regions', 'ResidenceController@getRegions');
-Route::get('/get_city', 'ResidenceController@getCitys');
-Route::get('/get_countrys', 'ResidenceController@getCountrys');
+Route::get('/get_city', 'ResidenceController@getCities');
 
 Auth::routes(['verify' => true]);

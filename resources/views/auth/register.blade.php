@@ -70,8 +70,8 @@
 
             <select class="custom-select my-1 mr-sm-2" name="country_id" id="country_id">
               <option value="0">- select country -</option>
-              @if (!empty($coutnrys))
-                @foreach($coutnrys AS $country)
+              @if (!empty($countries))
+                @foreach($countries AS $country)
                   <option value="{{$country -> country_id}}">{{$country -> country_name}}</option>
                 @endforeach
               @endif

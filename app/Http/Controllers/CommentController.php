@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+use Illuminate\Http\Request;
 use App\Comment;
 
 use Illuminate\Support\Facades\DB;
@@ -15,17 +15,15 @@ class CommentController extends Controller
         $this->middleware(['auth', 'verified']);
     }
 
-    public function index() 
-    {
-    	$comments = Comment::getComments();
-    	
+    public function index(){
+        $comments = Comment::getComments();
+        
         $messages = [];
 
-    	return view("comments", ["comments"=>$comments, "messages"=>$messages]);
+        return view("comments", ["comments"=>$comments, "messages"=>$messages]);
     }
-
-    public function create() 
-    {
+  
+    public function store(Request $request) {
         request()->validate([
 
             'theme' => 'required|max:255',
@@ -33,25 +31,18 @@ class CommentController extends Controller
             
         ]);
 
-    	$input = Request::all();
+        $input = $request -> all();
         
         $messages = [];
-    
-        if (session('comment') !== $input['text']) {
-            $result = Comment::create([
-                'theme' => $input['theme'],
-                'text' => $input['text'],
-                'user_id' => Auth::id()
-            ]);
 
-            if (isset($result -> id)) {
-                session(['comment' => $input['text']]);
-                $messages[] = "The comment has been sent";
-            }
-        }
+        $result = Comment::create([
+            'theme' => $input['theme'],
+            'text' => $input['text'],
+            'user_id' => Auth::id()
+        ]);
+
+        $comments = Comment::getComments();
         
-    	$comments = Comment::getComments();
-    	
-        return view("comments", ["comments" => $comments, "messages" => $messages]);
+        return redirect() -> back() -> with('CommentSentResut', 'The comment has been sent');
     }
 }

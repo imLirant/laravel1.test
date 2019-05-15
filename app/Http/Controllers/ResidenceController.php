@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class ResidenceController extends Controller
 {
-	public function index()
-	{
-		return null; 
-	}
-
 	public function getRegions()
 	{
 		$input = Request::all();
@@ -24,16 +19,16 @@ class ResidenceController extends Controller
 		}
 	}
 
-	public function getCitys()
+	public function getCities()
 	{
 		$input = Request::all();
 
 		if (isset($input['region_id'])) {
-			$citys = DB::table('city')
+			$cities = DB::table('city')
                 ->where('region_id', $input['region_id'])
                 ->get();
 
-            return array('citys'=>$citys);  
+            return array('cities'=>$cities);
 		}
 	}
 }

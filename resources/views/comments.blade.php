@@ -3,10 +3,8 @@
 @section('content')
 
 
-@if (!empty($messages))
-  @foreach($messages AS $mess)
-    <div class="alert alert-info" role="alert"> {{ $mess }} </div>
-  @endforeach
+@if(Session::has('CommentSentResut'))
+    <div class="alert alert-info" role="alert"> {{ session()->get('CommentSentResut') }} </div>
 @endif
 
 @if ($errors -> any())
@@ -41,14 +39,14 @@
                     <div class="card mb-3" style="max-width: 540px;">
                       <div class="row align-items-center">
                         <div class="col-md-4">
-                          <img class="card-img-top" src="/images/{{$comm -> image}}" alt="Card image cap">              
+                          <img class="card-img-top" src="{{$comm -> user -> getImagePath()}}" alt="Card image cap">              
                         </div>
                   
                         <div class="col-md-8">
                           <div class="card-body">
                             <h5 class="card-title">
-                              <a class="nav-link " href="/profile/id={{$comm -> user_id}}">
-                                {{$comm -> name}}
+                              <a class="nav-link " href="{{$comm -> user -> getProfileUrl()}}">
+                                {{$comm -> user -> name}}
                               </a>
                             </h5>
                             

@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
 
-@if (!empty($messages))
-  @foreach($messages AS $mess)
+@if (Session::has('UserUpdateResut'))
+  @foreach(session()->get('UserUpdateResut') AS $mess)
     <div class="alert alert-info" role="alert"> {{ $mess }} </div>
   @endforeach
 @endif
@@ -67,8 +67,8 @@
         <small class="text-muted">{{ $user -> residence ?? ''}} </small>
         <select class="custom-select my-1 mr-sm-2" name="country_id" id="country_id" class="StyleSelectBox">
           <option value="0">- select country -</option>
-          @if (!empty($coutnrys))
-            @foreach($coutnrys AS $country)
+          @if (!empty($countries))
+            @foreach($countries AS $country)
               <option value="{{$country -> country_id}}">{{$country -> country_name}}</option>
             @endforeach
           @endif

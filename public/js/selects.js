@@ -87,7 +87,7 @@ $('#region_id').change(function ()
 				{
 					var options = ''; 
 				
-					$(result.citys).each(function() 
+					$(result.cities).each(function() 
 					{
 						options += '<option value="' + $(this).attr('city_id') + '">' + $(this).attr('city_name') + '</option>'; 		
 					});
