@@ -117,15 +117,16 @@
       <form class="form-comment" action="{{ route('image.upload.post') }}" method="POST" enctype="multipart/form-data">
         @csrf
         
-        <div class="row">
+        <!-- <div class="row"> -->
           <div class="col">
             <input class="form-control" type="file" name="image">
           </div>
           
-          <div class="row">
-            <button class="btn btn-primary btn-lg active" type="submit">Upload</button>
-          </div>
-        </div>
+          <!-- <div class="row"> -->
+            <br>
+            <center><button class="btn btn-primary btn-lg active" type="submit">Upload</button></center>
+          <!-- </div> -->
+        <!-- </div> -->
       </form>
     </div>
   </div>

@@ -20,7 +20,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/comments', 'CommentController@index')->name('comments');
-Route::post('/comments', 'CommentController@store');
+Route::get('/comments/get-json', 'CommentController@getJson');
+Route::get('/comments/get-count', 'CommentController@getCount');
+
+Route::post('/comments-save', 'CommentController@store');
+Route::delete('/comments', 'CommentController@delete'); 
+Route::get('/comment-delete', 'CommentController@delete'); 
 
 Route::get('/profile/edit', 'ProfileController@index');
 Route::post('/profile/edit', 'ProfileController@update')->name('image.upload.post');
@@ -28,7 +33,19 @@ Route::post('/profile/edit', 'ProfileController@update')->name('image.upload.pos
 Route::get('/profile/id={id}', 'ProfileController@show');
 Route::get('/profile', 'ProfileController@show');
 
+Route::get('/profile/get-json', 'ProfileController@getJson');
+
 Route::get('/get_regions', 'ResidenceController@getRegions');
 Route::get('/get_city', 'ResidenceController@getCities');
+
+Route::get('/answer', 'AnswerController@index');
+
+Route::post('/getResponse', 'ApiTestController@getResponse');
+Route::get('/post', 'ApiTestController@sandPost');
+
+Route::get('/test', 'ApiTestController@test');
+
+Route::get('/getTimeline', 'TwitterController@getUserTimeline');
+Route::post('/getTimeline', 'TwitterController@getUserTimeline');
 
 Auth::routes(['verify' => true]);

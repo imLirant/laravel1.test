@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Country;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -77,6 +78,6 @@ class RegisterController extends Controller
     }
 
     public function showRegistrationForm() {
-        return view('auth.register', ["countries" => DB::table('country')->get()]);
+        return view('auth.register', ["countries" => Country::get()]);
     }
 }

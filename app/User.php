@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use App\City;
+use \Twitter;
+
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
@@ -18,7 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'city_id', 'region_id', 'country_id', 'image',
+        'name', 'email', 'password', 'city_id', 'region_id', 'country_id', 'image', 'twitter'
     ];
 
     /**
@@ -41,19 +45,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public static function getResidence($city_id)
     {
-        $cityInfo = DB::table('city')
-            ->where('city_id', $city_id)
+        $cityInfo = City::where('city_id', $city_id)
             ->first();
         
-        $country = DB::table('country')
-            ->where('country_id', $cityInfo -> country_id)
-            ->first();
+        $country = $cityInfo -> country -> country_name;
 
-        $region = DB::table('region')
-            ->where('region_id', $cityInfo -> region_id)
-            ->first();
+        $region = $cityInfo -> region -> region_name; 
 
-        $result = $country -> country_name.', '.$region -> region_name.', '.$cityInfo -> city_name;
+        $result = $country.', '.$region.', '.$cityInfo -> city_name;
 
         return $result;
     }
@@ -74,6 +73,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return $user; 
     }
 
+    public function getShortInfo()
+    {
+        $user = User::select('id', 'name', 'image')
+                        ->where('id', $input['user_id'])
+                        -> first();
+        $user -> image = $user -> getImagePath();
+
+        return $user;
+            
+    }
+
     public function getImagePath()
     {
         return "/images/".$this -> image;
@@ -82,5 +92,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getProfileUrl()
     {
         return "/profile/id=".$this -> id;
+    }
+
+    public function getTimeline($count)
+    {
+        if (isset($this -> twitter))
+        {
+            return Twitter::getUserTimeline(['screen_name' => $this -> twitter, 'count' => $count, 'format' => 'json']);  
+        }
+        else
+        {
+            return [];
+        }
     }
 }

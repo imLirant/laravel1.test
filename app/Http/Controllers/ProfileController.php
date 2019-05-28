@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Country;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,7 +18,7 @@ class ProfileController extends Controller
 
     public function index() 
     {
-    	return view("profile-edit", ["user" => User::getUserInfo(), "countries" => DB::table('country')->get()]);
+    	return view("profile-edit", ["user" => User::getUserInfo(), "countries" => Country::get()]);
     }
 
     public function show($id = 0)
@@ -100,6 +100,20 @@ class ProfileController extends Controller
         }
         else {
             return redirect() -> route('verification.resend');
+        }
+    }
+
+    public function getJson(Request $request)
+    {
+        $input = $request -> all();
+
+        if (isset($input['user_id']))
+        {
+            $user = User::select('id', 'name', 'image')
+                        ->where('id', $input['user_id'])
+                        -> first();
+            $user -> image = $user -> getImagePath();
+            return $user;
         }
     }
 }

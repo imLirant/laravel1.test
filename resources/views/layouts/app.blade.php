@@ -25,6 +25,7 @@
 
     <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/selects.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
@@ -57,6 +58,9 @@
                         @else
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/comments') }}">Comments</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/answer') }}">Answer</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
