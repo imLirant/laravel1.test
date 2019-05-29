@@ -22,10 +22,11 @@
       </div>
     </div>
 
-      <input class="form-control" v-model="params.theme" type="text" placeholder="Theme" required>
-      <textarea class="form-control" v-model="params.text" cols="40" rows="5" placeholder="Comment" required></textarea>
+      <input class="form-control" v-model="params.theme" type="text" placeholder="Theme">
+      <textarea class="form-control" v-model="params.text" cols="40" rows="5" placeholder="Comment"></textarea>
       <br>
       <center><button @click="send" class="btn btn-primary btn-lg active">Send</button></center>
+    
     </div>
       
   </div>
@@ -33,29 +34,55 @@
 
 <script>
   export default {
-      data: function() {
-        return {
-            params: {
-                theme: '',
-                text: '',
-            },
-            errors: [],
-            messages: [],
+    data: function() {
+      return {
+          params: {
+              theme: null,
+              text: null,
+          },
+          
+          textValid: false,
+          themeValid: false,
+
+          errors: [],
+          messages: [],
+      }
+    },
+    
+    methods: {
+      send: function() {
+        if (this.validate()) {
+          axios.post('/comments-save', this.params).then((response) => {
+              this.params.text = null
+              this.params.theme = null
+              this.messages.push(response.data.message)
+              this.$eventBus.$emit('comment_send');
+            })
+          .catch(e => {
+            this.errors.push("Failed to send comment: " + e.message)
+          });
         }
       },
-      
-      methods: {
-        send: function() {
-            axios.post('/comments-save', this.params).then((response) => {
-                this.params.text = ""
-                this.params.theme = ""
-                this.messages.push(response.data.message)
-                this.$eventBus.$emit('comment_send');
-              })
-            .catch(e => {
-              this.errors.push("Failed to send comment: " + e.message)
-            });
-        },
+      validate: function() {
+        console.log("Check");
+        var err = false;
+
+        if (!this.params.theme || this.params.theme.trim().length == 0) {
+          this.errors.push("Theme is required");
+          err = true;
+        }
+
+        if (!this.params.text || this.params.text.trim().length == 0) {
+          this.errors.push("Text is required");
+          err = true;
+        }
+
+        if (err) {
+          return false;
+        }
+
+        return true;
       }
+    }
   }
 </script>

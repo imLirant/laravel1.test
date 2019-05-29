@@ -1,77 +1,116 @@
 <template>
+  <div class="row justify-content-center">   
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">Twitts</div>
+        <div class="card-body">
+          <div class="container">
+            <div class="row justify-content-md-center">
+              <div class="col-md-auto">
+                <button @click="update" class="btn btn-default text mb-1" v-if="!is_refresh">
+                  Refresh
+                </button>
+                <span class="badge badge-primary mb-1" v-if="is_refresh">Refreshing</span>
+                
+                <div v-for="twitt in items" :key="twitt.id">
+                  <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row align-items-center">
+                      <div class="col-md-4">
+                        <img class="card-img-top img-thumbnail" :src= imagePath alt="Card image cap">
+                      </div>
+                      <div class="col-md-8"> 
+                        <div class="card-body">
+                          <h5 class="card-title">
+                            <!-- <a class="nav-link " :href= twitt.user.profileUrl> -->
+                              {{twitt.user.name}}
+                            <!-- </a> -->
+                          </h5>
+                          
+                          <p v-if="twitt.in_reply_to_screen_name" class="card-text mb-2 text-muted">
+                            Reply to: {{ twitt.in_reply_to_screen_name }}
+                          </p>
 
-    <div class="row justify-content-center">   
+                          <p class="card-text mb-2 text-muted">{{ twitt.text }}</p>
+                          
+                          <p class="card-text">
+                            <small class="text-muted">
+                              {{ twitt.created_at }}
+                            </small>
+                          </p>
+                          
+                          <p class="card-text text-right">
+                            <small class="text-muted">
+                              Favorits {{ twitt.favorite_count }} Retweeted {{ twitt.retweet_count }}
+                            </small>
+                          </p>
 
-    <div v-for="comm in items" :key="comm.id">
-      <transition name="fade">
-      
-        <div class="card mb-3" style="max-width: 540px;">
-          
-          <div class="row align-items-center">
-            <div class="col-md-4">
-              <img class="card-img-top img-thumbnail" :src= comm.user.profile_image_url alt="Card image cap">              
-            </div>
-        
-            <div class="col-md-8">
-              
-              <div class="card-body">
-                <h5 class="card-title">
-                  <a class="nav-link " :href= comm.user.profileUrl>
-                    {{comm.user.name}}
-                  </a>
-                </h5>
-                  
-                <!-- <h6 class="card-subtitle mb-2 text-center text-muted">{{ comm.theme }}</h6> -->
-                <p class="card-text mb-2 text-muted">{{ comm.text }}</p>
-                <p class="card-text"><small class="text-muted">{{ comm.created_at }}</small></p>
-                  
+                          <p class="card-text text-left">
+                            <small v-for="url in twitt.entities.urls" class="text-muted">
+                              <a class="nav-link " :href= url.expanded_url>{{url.display_url}}</a>
+                            </small>
+                          </p>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
         </div>
-
-      </transition>
+      </div>
     </div>
-      
   </div>
 </template>
 
 <script>
   export default {
-      props: {
+    props: {
+      user: Object,
+    },
+    data: function() {
+      return {
+        items: {},
+        params: {
           username: '',
-          //Count: Number
+          count: -1, 
         },
-      data: function() {
-        return {
-            items: {},
-            params: {
-              username: "",
-              count: -1, 
-            },
-        }
-      },
-      mounted() {
-            this.send();
-        },
-      methods: {
-        send: function() {
-
-            // this.params.username = this.userName;
-            // this.params.count = this.count;
-
-            this.params.username = this.userName;
-            this.params.count = "5";
-
-
-            axios.post('/getTimeline', this.params).then((response) => {
-              console.log(response.data)
-              this.items = response.data
-            })
-            .catch(e => {
-              console.log(e)
-            });
-        },
+        is_refresh: false,
+        imagePath: "",
       }
+    },
+    created() {
+      this.$eventBus.$on('pooling-tick', this.update);
+    },
+    beforeDestroy() {
+      this.$eventBus.$off('pooling-tick');
+    },
+
+    mounted() {
+      this.update();
+      this.$eventBus.$emit('pooling-start');
+    },
+    methods: {
+      update: function() {
+        console.log("Updated");
+        this.is_refresh = true;
+        this.params.username = this.user.name;
+        this.params.count = this.user.count;
+
+        axios.post('/getTimeline', this.params).then((response) => {
+          console.log(response.data)
+          this.items = response.data
+          if(this.items.length > 0) {
+            this.imagePath = this.items[0].user.profile_image_url_https.replace('_normal', '');
+            this.$eventBus.$emit('set-twitterUser', this.items[0].user);
+          }
+        })
+        .catch(e => {
+          console.log(e)
+        }).finally(() => { this.is_refresh = false });
+      },
+    }
   }
 </script>

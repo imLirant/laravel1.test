@@ -61,9 +61,19 @@ class ProfileController extends Controller
             $messages[] = "Email changed";
         }
 
+        if (isset($input['twitter'])) {
+            $update['twitter'] = $input['twitter'];
+            $messages[] = "Twitter changed";   
+        }
+
+        if (isset($input['marscn'])) {
+            $update['marscn'] = $input['marscn'];
+            $messages[] = "Mars cn changed";
+        }
+
         if (request()->hasFile('image')) {
-            $imageName = Auth::id().'-'.time().'.'.request()->image->getClientOriginalExtension();
-            request()->image->move(public_path('images'), $imageName);
+            $imageName = Auth::id().'-'.time().'.'.request() -> image -> getClientOriginalExtension();
+            request() -> image -> move(public_path('images'), $imageName);
             $update['image'] = $imageName;
             $messages[] = "Image changed";
         }
@@ -102,18 +112,5 @@ class ProfileController extends Controller
             return redirect() -> route('verification.resend');
         }
     }
-
-    public function getJson(Request $request)
-    {
-        $input = $request -> all();
-
-        if (isset($input['user_id']))
-        {
-            $user = User::select('id', 'name', 'image')
-                        ->where('id', $input['user_id'])
-                        -> first();
-            $user -> image = $user -> getImagePath();
-            return $user;
-        }
-    }
 }
+ 

@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('twitter')->unique()->nullable();
+            $table->string('marscn')->unique()->nullable();
             $table->bigInteger('country_id')->nullable();
             $table->bigInteger('region_id')->nullable();
             $table->bigInteger('city_id')->nullable();

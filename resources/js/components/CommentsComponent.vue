@@ -138,7 +138,7 @@
         },
         mounted() {
             this.tick();
-            this.longPoolStart();
+            this.$eventBus.$emit('pooling-start');
         },
         created() {
             this.$eventBus.$on('comment_send', this.update);
@@ -146,7 +146,7 @@
         },
         beforeDestroy(){
             this.$eventBus.$off('comment_send');
-            this.$eventBus.$on('pooling-tick');
+            this.$eventBus.$off('pooling-tick');
         },
 
         methods: {
@@ -184,10 +184,6 @@
 
             },
 
-            longPoolStart: function() {
-              this.$eventBus.$emit('pooling-start');
-            },
-
             tick: function() {
               if (!this.is_refresh && this.currentPage === 0) {
                 axios.get('/comments/get-count').then((response) => {
@@ -203,15 +199,15 @@
             },
 
             del: function(id) {
+              --this.totalCount;
               this.deleteId = id;
               // axios.delete('/comments', {data: { comment_id: id }}).then((response) => {
                 axios.get('/comment-delete?comment_id=' + id).then((response) => {
-                
                 this.getPage(this.currentPage)
               })
               .catch(e => {
-                    console.log(e.message)
-                    // this.errors.push("Failed to get comments count: " + e.message)
+                    this.errors.push("Failed to delete comment: " + e.message)
+                    this.deleteId = -1;
                   });
             },
         }

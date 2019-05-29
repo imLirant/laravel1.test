@@ -70,6 +70,10 @@ class User extends Authenticatable implements MustVerifyEmail
             $user -> residence =  self::getResidence($user -> city_id);
         }
 
+        if (isset($user -> image)) {
+            $user -> image = $user -> getImagePath();
+        }
+ 
         return $user; 
     }
 
@@ -78,7 +82,13 @@ class User extends Authenticatable implements MustVerifyEmail
         $user = User::select('id', 'name', 'image')
                         ->where('id', $input['user_id'])
                         -> first();
-        $user -> image = $user -> getImagePath();
+        if (isset($user -> image)) {
+            $user -> image = $user -> getImagePath();
+        }
+        else {
+            $user -> image = "/images/anonymous-user.jpg";
+        }
+
 
         return $user;
             

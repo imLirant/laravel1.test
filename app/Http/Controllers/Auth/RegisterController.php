@@ -55,6 +55,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'city_id' => ['required'],
+            'twitter' => ['required', 'string', 'unique:users']
         ]); 
     }
 
@@ -73,7 +74,8 @@ class RegisterController extends Controller
             'city_id' => $data['city_id'],
             'region_id' => $data['region_id'],
             'country_id' => $data['country_id'],
-            'image' => "anonymous-user.jpg"
+            'image' => "anonymous-user.jpg",
+            'twitter' => $data['twitter'],
         ]);
     }
 

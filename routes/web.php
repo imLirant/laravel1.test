@@ -33,19 +33,12 @@ Route::post('/profile/edit', 'ProfileController@update')->name('image.upload.pos
 Route::get('/profile/id={id}', 'ProfileController@show');
 Route::get('/profile', 'ProfileController@show');
 
-Route::get('/profile/get-json', 'ProfileController@getJson');
-
 Route::get('/get_regions', 'ResidenceController@getRegions');
 Route::get('/get_city', 'ResidenceController@getCities');
 
 Route::get('/answer', 'AnswerController@index');
+Route::get('/answer-get', 'AnswerController@getYesNo');
 
-Route::post('/getResponse', 'ApiTestController@getResponse');
-Route::get('/post', 'ApiTestController@sandPost');
-
-Route::get('/test', 'ApiTestController@test');
-
-Route::get('/getTimeline', 'TwitterController@getUserTimeline');
 Route::post('/getTimeline', 'TwitterController@getUserTimeline');
 
 Auth::routes(['verify' => true]);

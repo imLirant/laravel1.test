@@ -34,7 +34,7 @@ Vue.component('commentform-component', require('./components/CommentFormComponen
 Vue.component('answer-component', require('./components/AnswerComponent.vue').default);
 Vue.component('pooling-component', require('./components/PoolingComponent.vue').default);
 Vue.component('twitter-component', require('./components/TwitterComponent.vue').default);
-
+Vue.component('profile-component', require('./components/ShowProfileComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

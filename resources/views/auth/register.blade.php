@@ -68,28 +68,43 @@
                 </div>
             </div>
 
-            <select class="custom-select my-1 mr-sm-2" name="country_id" id="country_id">
-              <option value="0">- select country -</option>
-              @if (!empty($countries))
-                @foreach($countries AS $country)
-                  <option value="{{$country -> country_id}}">{{$country -> country_name}}</option>
-                @endforeach
-              @endif
-            </select>
-      
-            <br>
-      
-            <select class="custom-select my-1 mr-sm-2" name="region_id" id="region_id" disabled="disabled">
-              <option value="0">- select region -</option><br>
-            </select>
-      
-            <br>
-      
-            <select class="custom-select my-1 mr-sm-2" name="city_id" id="city_id" disabled="disabled">
-              <option value="0">- select city -</option>
-            </select>
+            <div class="form-group row">
+              <label for="twitter" class="col-md-4 col-form-label text-md-right">{{ __('Twitter') }}</label>
+                <div class="col-md-6">
+                  <input type="text" name="twitter" class="form-control" id="twitter" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="country_id" class="col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
+              <div class="col-md-6">
+                <select class="custom-select my-1 mr-sm-2" name="country_id" id="country_id">
+                  <option value="0">- select country -</option>
+                    @if (!empty($countries))
+                      @foreach($countries AS $country)
+                        <option value="{{$country -> country_id}}">{{$country -> country_name}}</option>
+                      @endforeach
+                    @endif
+                  </select>
+              </div>
             
-            <br><br>
+              <label for="region_id" class="col-md-4 col-form-label text-md-right">{{ __('Region') }}</label>
+              <div class="col-md-6">
+            
+                <select class="custom-select my-1 mr-sm-2" name="region_id" id="region_id" disabled="disabled">
+                  <option value="0">- select region -</option><br>
+                </select>
+              </div>
+            
+              <label for="city_id" class="col-md-4 col-form-label text-md-right">{{ __('City') }}</label>
+              <div class="col-md-6">
+      
+                <select class="custom-select my-1 mr-sm-2" name="city_id" id="city_id" disabled="disabled">
+                  <option value="0">- select city -</option>
+                </select>
+              </div>
+            </div>
+            
             
             <div class="form-group row mb-0">
               <div class="col-md-6 offset-md-4">

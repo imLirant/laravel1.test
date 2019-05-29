@@ -46,28 +46,12 @@
 
 <script>
 
-  export const HTTP = axios.create({
-              baseURL: 'https://yesno.wtf',
-              timeout: 10000,
-              withCredentials: true,
-              
-              headers: {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Authorization' : '',
-              } 
-            })
-
-
   export default {
       data: function() {
         return {
             answer: '',
             image: '',
             errors: [],
-            info: "",
-            params: {
-              url: ""
-            },
             is_refresh: false,
         }
       },
@@ -78,28 +62,16 @@
       
       methods: {
         update: function() {
-          console.log(HTTP.defaults);
-          this.params.url = "https://yesno.wtf/api";
-            this.is_refresh = true;
-            axios.post('/getResponse', this.params).then((response) => {
-              // HTTP.post('/api').then((response) => {
-                this.answer = response.data.answer
-                this.image = response.data.image
-                this.is_refresh = false;
-              })
-            .catch(e => {
-              this.errors.push("Failed to send comment: " + e.message)
-            });
+          this.is_refresh = true;
+          axios.get('/answer-get').then((response) => {
+            this.answer = response.data.answer
+            this.image = response.data.image
+            this.is_refresh = false;
+          })
+          .catch(e => {
+            this.errors.push("Failed to send comment: " + e.message)
+          });
         },
-        test: function() {
-          this.params.url = "https://api.coindesk.com/v1/bpi/currentprice.json";
-          axios
-            .post('/getResponse', this.params)
-            .then((response) => {
-              // console.log(response.data);
-              this.info = "BTC = $" + response.data.bpi.USD.rate; 
-            });
-        }
       }
   }
 </script>

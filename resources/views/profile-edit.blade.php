@@ -57,6 +57,7 @@
         </div>
         
         <div class="row">
+          <label for="email" class="col-sm-2 col-form-label">Email</label>
           <div class="col">
               <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" 
     			       placeholder="{{$user -> email ?? 'Enter email'}}">
@@ -64,6 +65,22 @@
           </div>
         </div>
         
+        <div class="row">
+          <label for="twitter" class="col-sm-2 col-form-label">Twitter</label>
+          <div class="col">
+              <input type="text" name="twitter" class="form-control" id="twitter" 
+                 placeholder="{{$user -> twitter ?? 'Enter twitter'}}">
+          </div>
+        </div>
+
+        <div class="row">
+          <label for="marscn" class="col-sm-2 col-form-label">Mars cn</label>
+          <div class="col">
+              <input type="text" name="marscn" class="form-control" id="marscn" 
+                 placeholder="{{$user -> marscn ?? 'Enter mars cn'}}">
+          </div>
+        </div>
+
         <small class="text-muted">{{ $user -> residence ?? ''}} </small>
         <select class="custom-select my-1 mr-sm-2" name="country_id" id="country_id" class="StyleSelectBox">
           <option value="0">- select country -</option>
@@ -108,7 +125,7 @@
       <br>
   		<center>
         <div class="card" style="width: 16rem;">
-          <img class="card-img-top" src="/images/{{$user -> image}}">
+          <img class="card-img-top" src="{{$user -> image}}">
         </div>
       </center>
   		
