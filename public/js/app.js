@@ -2229,7 +2229,6 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     PoolingStart: function PoolingStart() {
-      console.log("Pooling start");
       this.pooling = true;
       this.Pooling();
     },
@@ -2300,7 +2299,6 @@ __webpack_require__.r(__webpack_exports__);
     setTU: function setTU(tuser) {
       this.twitterUser = tuser;
       this.userGeted = true;
-      console.log(tuser);
     }
   }
 });
@@ -2412,12 +2410,10 @@ __webpack_require__.r(__webpack_exports__);
     update: function update() {
       var _this = this;
 
-      console.log("Updated");
       this.is_refresh = true;
       this.params.username = this.user.name;
       this.params.count = this.user.count;
       axios.post('/getTimeline', this.params).then(function (response) {
-        console.log(response.data);
         _this.items = response.data;
 
         if (_this.items.length > 0) {

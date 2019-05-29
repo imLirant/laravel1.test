@@ -94,13 +94,11 @@
     },
     methods: {
       update: function() {
-        console.log("Updated");
         this.is_refresh = true;
         this.params.username = this.user.name;
         this.params.count = this.user.count;
 
         axios.post('/getTimeline', this.params).then((response) => {
-          console.log(response.data)
           this.items = response.data
           if(this.items.length > 0) {
             this.imagePath = this.items[0].user.profile_image_url_https.replace('_normal', '');

@@ -49,7 +49,6 @@
         setTU: function(tuser) {
           this.twitterUser = tuser;
           this.userGeted = true;
-          console.log(tuser);
         },
       }
   }

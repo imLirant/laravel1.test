@@ -34,7 +34,6 @@
         },
 
         PoolingStart: function() {
-          console.log("Pooling start");
           this.pooling = true;
           this.Pooling();
         },
