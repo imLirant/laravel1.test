@@ -23,8 +23,6 @@
 </head>
 <body>
 
-    <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/selects.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
     <div id="app">

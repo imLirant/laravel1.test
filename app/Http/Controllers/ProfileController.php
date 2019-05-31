@@ -28,7 +28,7 @@ class ProfileController extends Controller
 
     public function update(Request $request) 
     {
-    	$input = $request -> all();
+        $input = $request -> all();
         
         $user = User::getUserInfo();
 
@@ -105,12 +105,12 @@ class ProfileController extends Controller
                 ->update($update);
         }
 
-        if ($user -> email_verified_at !== null) {
-            return redirect() -> back() -> with('UserUpdateResut', $messages);
-        }
-        else {
-            return redirect() -> route('verification.resend');
-        }
+        $result = [];
+        $result['messages'] = $messages;
+        $result['user'] = User::getUserInfo();
+        $result['email_changed'] = $user -> email_verified_at === null;
+
+        return $result;
     }
 }
  

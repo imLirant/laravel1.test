@@ -33,6 +33,7 @@ Route::post('/profile/edit', 'ProfileController@update')->name('image.upload.pos
 Route::get('/profile/id={id}', 'ProfileController@show');
 Route::get('/profile', 'ProfileController@show');
 
+Route::get('/get_countries', 'ResidenceController@getCountries');
 Route::get('/get_regions', 'ResidenceController@getRegions');
 Route::get('/get_city', 'ResidenceController@getCities');
 

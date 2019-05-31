@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Country;
 use App\Region;
 use App\City;
 
@@ -30,5 +31,10 @@ class ResidenceController extends Controller
 
             return array('cities'=>$cities);
 		}
+	}
+
+	public function getCountries()
+	{
+		return Country::get();
 	}
 }

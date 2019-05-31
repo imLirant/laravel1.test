@@ -63,8 +63,8 @@
           });
         }
       },
-      validate: function() {
-        console.log("Check");
+      validate: function() { 
+        // console.log("Check");
         var err = false;
 
         if (!this.params.theme || this.params.theme.trim().length == 0) {

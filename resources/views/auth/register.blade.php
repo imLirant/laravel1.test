@@ -8,6 +8,9 @@
   @endforeach
 @endif
 
+<script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}" defer></script>
+<script type="text/javascript" src="{{ URL::asset('js/selects.js') }}" defer></script>
+
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">

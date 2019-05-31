@@ -35,7 +35,11 @@ Vue.component('answer-component', require('./components/AnswerComponent.vue').de
 Vue.component('pooling-component', require('./components/PoolingComponent.vue').default);
 Vue.component('twitter-component', require('./components/TwitterComponent.vue').default);
 Vue.component('profile-component', require('./components/ShowProfileComponent.vue').default);
+Vue.component('select-city', require('./components/CitySelectComponent.vue').default);
+Vue.component('change-password', require('./components/PasswordChangeComponent.vue').default);
+Vue.component('image-upload', require('./components/ImageUploadComponent.vue').default);
 
+Vue.component('profile-edit-page', require('./pages/ProfileEdit.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
