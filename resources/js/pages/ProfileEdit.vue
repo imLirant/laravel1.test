@@ -31,14 +31,15 @@
           </div>
 
           <change-password v-bind:min_length="8"></change-password>
-          
+        
           <div class="form-group row">
             <label for="email" class="col-md-2 col-form-label text-md-right">Email</label>
-            <div class="col-md-10">
+              <div class="col-md-10">
                 <input type="email" v-model="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" 
-                   :placeholder="userInfo.email ? userInfo.email : 'Enter email'">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
+                  :placeholder="userInfo.email ? userInfo.email : 'Enter email'">
+                <small v-if="emailValid" id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <small v-else id="emailHelp" class="form-text text-muted">Email invalid</small>
+              </div>
           </div>
           
           <div class="form-group row">
@@ -104,6 +105,17 @@
         twitter: null,
         marscn: null,
         messages: [],
+        emailValid: true,
+      }
+    },
+    watch: {
+      email: function(){
+        if (this.email) {
+          this.emailValid = this.validateEmail();
+        }
+        else {
+          this.emailValid = true;
+        }
       }
     },
     mounted() {
@@ -124,6 +136,12 @@
       get_info: function() {
         this.$eventBus.$emit("get_passwords");
       },
+      
+      validateEmail: function() {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(this.email).toLowerCase());
+      },
+
       send: function(oldPass, newPass, confirmPass, valid) {
         var props = {};
 
@@ -147,7 +165,7 @@
           props['last_name'] = this.last_name;
         }
 
-        if (this.email) {
+        if (this.email && this.emailValid) {
           props['email'] = this.email;
         }
 

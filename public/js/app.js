@@ -1984,6 +1984,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2805,6 +2806,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     user: Object
@@ -2820,8 +2822,18 @@ __webpack_require__.r(__webpack_exports__);
       email: null,
       twitter: null,
       marscn: null,
-      messages: []
+      messages: [],
+      emailValid: true
     };
+  },
+  watch: {
+    email: function email() {
+      if (this.email) {
+        this.emailValid = this.validateEmail();
+      } else {
+        this.emailValid = true;
+      }
+    }
   },
   mounted: function mounted() {},
   created: function created() {
@@ -2835,6 +2847,10 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     get_info: function get_info() {
       this.$eventBus.$emit("get_passwords");
+    },
+    validateEmail: function validateEmail() {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(this.email).toLowerCase());
     },
     send: function send(oldPass, newPass, confirmPass, valid) {
       var _this = this;
@@ -2861,7 +2877,7 @@ __webpack_require__.r(__webpack_exports__);
         props['last_name'] = this.last_name;
       }
 
-      if (this.email) {
+      if (this.email && this.emailValid) {
         props['email'] = this.email;
       }
 
@@ -39265,7 +39281,7 @@ var render = function() {
                     attrs: { role: "alert" }
                   },
                   [
-                    _vm._v("\n      " + _vm._s(error) + "\n      "),
+                    _vm._v("\n        " + _vm._s(error) + "\n        "),
                     _vm._m(0, true)
                   ]
                 )
@@ -39287,7 +39303,7 @@ var render = function() {
                     attrs: { role: "alert" }
                   },
                   [
-                    _vm._v("\n      " + _vm._s(message) + "\n      "),
+                    _vm._v("\n        " + _vm._s(message) + "\n        "),
                     _vm._m(1, true)
                   ]
                 )
@@ -39349,7 +39365,7 @@ var render = function() {
               staticClass: "btn btn-primary btn-lg active",
               on: { click: _vm.send }
             },
-            [_vm._v("Send")]
+            [_vm._v("\n        Send\n      ")]
           )
         ])
       ],
@@ -40446,14 +40462,23 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c(
-                  "small",
-                  {
-                    staticClass: "form-text text-muted",
-                    attrs: { id: "emailHelp" }
-                  },
-                  [_vm._v("We'll never share your email with anyone else.")]
-                )
+                _vm.emailValid
+                  ? _c(
+                      "small",
+                      {
+                        staticClass: "form-text text-muted",
+                        attrs: { id: "emailHelp" }
+                      },
+                      [_vm._v("We'll never share your email with anyone else.")]
+                    )
+                  : _c(
+                      "small",
+                      {
+                        staticClass: "form-text text-muted",
+                        attrs: { id: "emailHelp" }
+                      },
+                      [_vm._v("Email invalid")]
+                    )
               ])
             ]),
             _vm._v(" "),
