@@ -106,12 +106,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getTimeline($count)
     {
-        if (isset($this -> twitter))
-        {
+        if (isset($this -> twitter)) {
             return Twitter::getUserTimeline(['screen_name' => $this -> twitter, 'count' => $count, 'format' => 'json']);  
         }
-        else
-        {
+        else {
             return [];
         }
     }
